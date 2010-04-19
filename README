@@ -1,0 +1,20 @@
+IHbase:
+---------
+http://github.com/ykulbak/ihbase 
+
+April 2010
+
+Released under Apache License 2.0.
+
+Previously release under HBase as a contrib. For usage information please refer to the github project wiki.
+
+To build:
+---------
+- Download or checkout hbase 0.20.4 and  build it in case it's not already built)
+- Use maven to build, make sure you append -Dhbase.basedir=<your hbase directory>  to any maven command you issue
+- In case of problems email yoram.kulbak@gmail.com 
+
+Owners:
+------------
+Yoram Kulbak
+Dan Washusen
