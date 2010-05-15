@@ -98,14 +98,14 @@
             <artifactId>hbase-core</artifactId>
             <version>${hbase.version}</version>
             <scope>system</scope>
-            <systemPath>${hbase.basedir}/build/hbase-0.20.4.jar</systemPath>
+            <systemPath>${hbase.basedir}/hbase-0.20.4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-core-test</artifactId>
             <version>${hbase.version}</version>
             <scope>system</scope>
-            <systemPath>${hbase.basedir}/build/hbase-0.20.4-test.jar</systemPath>
+            <systemPath>${hbase.basedir}/hbase-0.20.4-test.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop.zookeeper</groupId>

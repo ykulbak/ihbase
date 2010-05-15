@@ -312,7 +312,10 @@ public class IdxRegion extends HRegion {
         @Override
         public boolean next(List<KeyValue> outResults) throws IOException {
             ReadWriteConsistencyControl.resetThreadReadPoint(rwcc);
-
+            if (storeHeap == null) {
+                keyProvider.init();
+                initHeap();
+            }
             //DebugPrint.println("IdxScanner.next");
             // Seek to the next key value
             seekNext();
@@ -347,7 +350,7 @@ public class IdxRegion extends HRegion {
 
                 if (keyValue == null) {
                     // out of results keys, nothing more to process
-                    super.getStoreHeap().close();
+                    super.storeHeap.close();
                     return;
                 } else if (lastKeyValue == null) {
                     // first key returned from the key provider
@@ -372,7 +375,7 @@ public class IdxRegion extends HRegion {
 
             // seek the store heap to the next key
             // (this is what makes the scanner faster)
-            getStoreHeap().seek(keyValue);
+            super.storeHeap.seek(keyValue);
         }
 
         @Override
@@ -385,9 +388,10 @@ public class IdxRegion extends HRegion {
     }
 
     class KeyProvider {
-        private final KeyValueHeap memstoreHeap;
+        private KeyValueHeap memstoreHeap;
         private final IdxSearchContext indexSearchContext;
         private final IntSet.IntSetIterator matchedExpressionIterator;
+        private Scan scan;
 
         private KeyValue currentMemstoreKey = null;
         private KeyValue currentExpressionKey = null;
@@ -399,11 +403,17 @@ public class IdxRegion extends HRegion {
                     IntSet matchedExpression, Scan scan) {
             this.indexSearchContext = idxSearchContext;
             this.matchedExpressionIterator = matchedExpression.iterator();
-
-            memstoreHeap = initMemstoreHeap(scan);
+            this.scan = scan;
 
             startRow = scan.getStartRow();
             isStartRowSatisfied = startRow == null;
+        }
+
+        /**
+         * Must be called before the any method is accessed.
+         */
+        public void init() {
+            memstoreHeap = initMemstoreHeap(scan);
         }
 
         private KeyValueHeap initMemstoreHeap(Scan scan) {
