@@ -27,10 +27,22 @@ import org.apache.hadoop.hbase.client.idx.IdxColumnDescriptor;
 import org.apache.hadoop.hbase.client.idx.IdxIndexDescriptor;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import javax.management.*;
+import javax.management.AttributeNotFoundException;
+import javax.management.MBeanAttributeInfo;
+import javax.management.MBeanException;
+import javax.management.MBeanInfo;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
+import javax.management.StandardMBean;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * A delegate MBean to get stats / poke an idx region.

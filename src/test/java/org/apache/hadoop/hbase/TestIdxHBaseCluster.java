@@ -20,7 +20,11 @@
 package org.apache.hadoop.hbase;
 
 import junit.framework.Assert;
-import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.idx.IdxColumnDescriptor;
 import org.apache.hadoop.hbase.client.idx.IdxIndexDescriptor;
 import org.apache.hadoop.hbase.client.idx.IdxQualifierType;

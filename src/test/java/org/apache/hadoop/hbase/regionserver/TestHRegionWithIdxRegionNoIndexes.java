@@ -55,4 +55,5 @@ public class TestHRegionWithIdxRegionNoIndexes extends TestHRegion {
     @Override
     public void testGetScanner_WithNoFamilies() throws IOException {
         //Disable, parent test is broken todo submit JIRA and discuss
-    }}
+    }
+}
