@@ -28,7 +28,7 @@
     <description>Indexed HBASE, indexes regions for faster scans</description>
     <url>http://github.com/ykulbak/ihbase</url>
     <packaging>jar</packaging>
-    <version>0.20.4-SNAPSHOT</version>
+    <version>0.20.5-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -45,8 +45,8 @@
 
     <properties>
         <jdk.version>1.6</jdk.version>
-        <hadoop.version>0.20.2-with-200-826</hadoop.version>
-        <hbase.version>0.20.4</hbase.version>
+        <hadoop.version>0.20.2</hadoop.version>
+        <hbase.version>0.20.5</hbase.version>
         <zookeeper.version>3.2.2</zookeeper.version>
     </properties>
 
@@ -54,27 +54,27 @@
         <repository>
             <id>jboss.com</id>
             <name>JBoss.com Repository</name>
-            <url>http://repository.jboss.com/maven2/</url>
+            <url>http://repository.jboss.com/maven2</url>
         </repository>
         <repository>
             <id>java.net</id>
             <name>java.net Repository</name>
-            <url>http://download.java.net/maven/2/</url>
+            <url>http://download.java.net/maven/2</url>
         </repository>
         <repository>
             <id>ibiblio</id>
             <name>ibiblio</name>
-            <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository/</url>
+            <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
         </repository>
         <repository>
             <id>apache-releases</id>
             <name>Apache Releases repository</name>
-            <url>https://repository.apache.org/content/repositories/releases/</url>
+            <url>https://repository.apache.org/content/repositories/releases</url>
         </repository>
         <repository>
             <id>apache-snapshot</id>
             <name>Apache Snapshot repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -82,7 +82,7 @@
         <repository>
             <id>ryan-repo</id>
             <name>Ryan's repository for hadoop dependencies</name>
-            <url>http://people.apache.org/~rawson/repo/</url>
+            <url>http://people.apache.org/~rawson/repo</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -98,14 +98,14 @@
             <artifactId>hbase-core</artifactId>
             <version>${hbase.version}</version>
             <scope>system</scope>
-            <systemPath>${hbase.basedir}/hbase-0.20.4.jar</systemPath>
+            <systemPath>${hbase.basedir}/hbase-${hbase.version}.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-core-test</artifactId>
             <version>${hbase.version}</version>
             <scope>system</scope>
-            <systemPath>${hbase.basedir}/hbase-0.20.4-test.jar</systemPath>
+            <systemPath>${hbase.basedir}/hbase-${hbase.version}-test.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop.zookeeper</groupId>
@@ -123,41 +123,28 @@
             <version>${hadoop.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
         </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.jdmk</groupId>
-                    <artifactId>jmxtools</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jmx</groupId>
-                    <artifactId>jmxri</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+
         <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
             <version>2.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.4.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.4.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
