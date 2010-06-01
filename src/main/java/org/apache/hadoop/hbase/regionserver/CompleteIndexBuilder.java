@@ -44,6 +44,11 @@ import org.apache.hadoop.hbase.util.Bytes;
  */
 public class CompleteIndexBuilder {
 
+    /**
+     * Number of pre calculated head and tail sets.
+     */
+    private static final int NUMBER_OF_PRE_CALCULATED_SETS = 4;
+
     private final HColumnDescriptor columnDescriptor;
     private final IdxIndexDescriptor indexDescriptor;
     /**
@@ -187,9 +192,8 @@ public class CompleteIndexBuilder {
             for (int i = 0; i < indexSize; i++) {
                 valueStore[i] = valueStoreBuilders.get(i).finish(numKeyValues);
             }
-            int interval = (int) Math.round(Math.sqrt(indexSize));
-            int precalcSize = indexSize / interval +
-                    Integer.signum(indexSize % interval);
+            int interval = (indexSize / NUMBER_OF_PRE_CALCULATED_SETS) + (indexSize < NUMBER_OF_PRE_CALCULATED_SETS ? 1 : 0);
+            int precalcSize = indexSize / interval + Integer.signum(indexSize % interval);
 
             IntSet[] tails = new IntSet[precalcSize];
             IntSet currentTail = IntSetBuilder.newEmptyIntSet(numKeyValues);

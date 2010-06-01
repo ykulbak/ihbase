@@ -79,8 +79,7 @@ public class TestIdxHBaseCluster extends TestHBaseCluster {
         byte[] family = Bytes.toBytes("concurrentRW");
         byte[] qualifier = Bytes.toBytes("strings");
         IdxColumnDescriptor descriptor = new IdxColumnDescriptor(family);
-        descriptor.addIndexDescriptor(new IdxIndexDescriptor(qualifier,
-                IdxQualifierType.CHAR_ARRAY));
+        descriptor.addIndexDescriptor(new IdxIndexDescriptor(qualifier, IdxQualifierType.CHAR_ARRAY));
         desc.addFamily(descriptor);
         HBaseAdmin admin = new HBaseAdmin(conf);
         admin.createTable(desc);
@@ -93,32 +92,30 @@ public class TestIdxHBaseCluster extends TestHBaseCluster {
 
         byte[] value = Bytes.toBytes((FIXED_PART + 0).toCharArray());
         IdxScan idxScan = new IdxScan();
-        idxScan.setExpression(Expression.comparison(family, qualifier,
-                Comparison.Operator.EQ, value));
-        idxScan.setFilter(new SingleColumnValueFilter(family, qualifier,
-                CompareFilter.CompareOp.EQUAL, value));
+        idxScan.setExpression(Expression.comparison(family, qualifier, Comparison.Operator.EQ, value));
+        idxScan.setFilter(new SingleColumnValueFilter(family, qualifier, CompareFilter.CompareOp.EQUAL, value));
         idxScan.setCaching(1000);
 
         int count = 0;
         int finalCount = maxRows / 10;
         int printCount = 0;
         //List<Result> prevList = null;
+        int totalScans = 0;
         while (count < finalCount) {
             ResultScanner scanner = table.getScanner(idxScan);
             int nextCount = 0;
             //List<Result> resultList = new ArrayList<Result>();
             for (Result res : scanner) {
                 nextCount++;
-                Assert.assertTrue(Arrays.equals(res.getValue(family, qualifier),
-                        value));
+                Assert.assertTrue(Arrays.equals(res.getValue(family, qualifier), value));
                 //resultList.add(res);
             }
+            totalScans++;
             if (nextCount > printCount + 1000) {
                 System.out.printf("++ found %d matching rows\n", nextCount);
                 printCount = nextCount;
             }
-            String infoString = "nextCount=" + nextCount + ", count=" + count +
-                    ", finalCount=" + finalCount;
+            String infoString = "nextCount=" + nextCount + ", count=" + count + ", finalCount=" + finalCount;
             boolean condition = nextCount >= count && nextCount <= finalCount;
             if (!condition) {
                 System.out.println("-------- " + infoString);
@@ -136,6 +133,7 @@ public class TestIdxHBaseCluster extends TestHBaseCluster {
             //prevList = resultList;
             //DebugPrint.reset();
         }
+        System.out.println("total scans = " + totalScans);
         service.shutdown();
     }
 
@@ -148,8 +146,7 @@ public class TestIdxHBaseCluster extends TestHBaseCluster {
         private AtomicInteger sequence;
         private byte[][] rows;
 
-        private Writer(HTable table, byte[] family, byte[] qualifier,
-                       AtomicInteger sequence, byte[][] rows) {
+        private Writer(HTable table, byte[] family, byte[] qualifier, AtomicInteger sequence, byte[][] rows) {
             this.table = table;
             this.family = family;
             this.qualifier = qualifier;
@@ -161,7 +158,7 @@ public class TestIdxHBaseCluster extends TestHBaseCluster {
         public Object call() throws Exception {
             while (true) {
                 int num = sequence.getAndIncrement();
-                if (num % 10 == 0) {
+                if (num % 100 == 0) {
                     System.out.printf("-- writing row %d\n", num);
                 }
                 if (num <= rows.length) {

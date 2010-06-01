@@ -91,6 +91,11 @@ public class IdxRegionIndexManager implements HeapSize {
         heapSize = FIXED_SIZE;
     }
 
+    /**
+     * Get the list of keys for this index manager.
+     *
+     * @return the list of keys
+     */
     public ObjectArrayList<KeyValue> getKeys() {
         return keys;
     }
@@ -146,8 +151,7 @@ public class IdxRegionIndexManager implements HeapSize {
                 work);
     }
 
-    private void switchIndex(final ObjectArrayList<KeyValue> newKeys,
-                             final Map<Pair<byte[], byte[]>, IdxIndex> newIndexMap) {
+    private void switchIndex(final ObjectArrayList<KeyValue> newKeys, final Map<Pair<byte[], byte[]>, IdxIndex> newIndexMap) {
         // There is no lock here because switchIndex is called in the context of a newScannerLock
         // and one scanners are created they keep a ref to the old index (which never changes).
         this.keys = newKeys;
@@ -211,11 +215,13 @@ public class IdxRegionIndexManager implements HeapSize {
                     heapSize += firstOnRow.heapSize();
                     for (KeyValue keyValue : nextRow) {
                         try {
-                            CompleteIndexBuilder idx = builders.get(Pair.of(keyValue.getFamily(),
-                                    keyValue.getQualifier()));
+                            CompleteIndexBuilder idx = builders.get(Pair.of(keyValue.getFamily(), keyValue.getQualifier()));
                             // we must have an index since we've limited the
                             // scan to include only indexed columns
                             assert idx != null;
+                            if (LOG.isTraceEnabled()) {
+                                LOG.trace("About to add kv: [" + keyValue + "] with id " + id);
+                            }
                             idx.addKeyValue(keyValue, id);
                         } catch (Exception e) {
                             LOG.error("Failed to add " + keyValue + " to the index", e);
@@ -225,8 +231,7 @@ public class IdxRegionIndexManager implements HeapSize {
                 }
             } while (moreRows);
             stopWatch.stop();
-            LOG.info("Filled indices for region: '" + region.getRegionNameAsString()
-                    + "' with " + id + " entries in " + stopWatch.toString());
+            LOG.info("Filled indices for region: '" + region.getRegionNameAsString() + "' with " + id + " entries in " + stopWatch.toString());
             return newKeys;
         } finally {
             scanner.close();
@@ -252,22 +257,17 @@ public class IdxRegionIndexManager implements HeapSize {
     private Map<Pair<byte[], byte[]>, IdxIndex> finalizeIndex(Map<Pair<byte[], byte[]>,
             CompleteIndexBuilder> builders, ObjectArrayList<KeyValue> newKeys) {
         Map<Pair<byte[], byte[]>, IdxIndex> newIndexes = new HashMap<Pair<byte[], byte[]>, IdxIndex>();
-        for (Map.Entry<Pair<byte[], byte[]>, CompleteIndexBuilder> indexEntry :
-                builders.entrySet()) {
+        for (Map.Entry<Pair<byte[], byte[]>, CompleteIndexBuilder> indexEntry : builders.entrySet()) {
             final IdxIndex index = indexEntry.getValue().finalizeIndex(newKeys.size());
             final Pair<byte[], byte[]> key = indexEntry.getKey();
             newIndexes.put(key, index);
             // adjust the heapsize
-            long indexSize = ClassSize.align(ClassSize.MAP_ENTRY +
-                    ClassSize.align(ClassSize.OBJECT + 2 * ClassSize.ARRAY +
-                            key.getFirst().length +
-                            key.getSecond().length) + index.heapSize());
-            LOG.info(String.format("Final index size: %f mb for region: '%s' index: %s",
-                    toMb(indexSize), Bytes.toString(key.getFirst()), Bytes.toString(key.getSecond())));
+            long indexSize = ClassSize.align(ClassSize.MAP_ENTRY + ClassSize.align(ClassSize.OBJECT + 2 * ClassSize.ARRAY +
+                    key.getFirst().length + key.getSecond().length) + index.heapSize());
+            LOG.info(String.format("Final index size: %f mb for region: '%s' index: %s", toMb(indexSize), Bytes.toString(key.getFirst()), Bytes.toString(key.getSecond())));
             heapSize += indexSize;
         }
-        LOG.info(String.format("Total index heap overhead: %f mb for region: '%s'",
-                toMb(heapSize), region.getRegionNameAsString()));
+        LOG.info(String.format("Total index heap overhead: %f mb for region: '%s'", toMb(heapSize), region.getRegionNameAsString()));
         return newIndexes;
     }
 
@@ -307,8 +307,7 @@ public class IdxRegionIndexManager implements HeapSize {
     public long getIndexHeapSize(String columnName) {
         String[] familyAndQualifier = columnName.split(":");
         if (familyAndQualifier != null && familyAndQualifier.length == 2) {
-            Pair fqPair = Pair.of(Bytes.toBytes(familyAndQualifier[0]),
-                    Bytes.toBytes(familyAndQualifier[1]));
+            Pair fqPair = Pair.of(Bytes.toBytes(familyAndQualifier[0]), Bytes.toBytes(familyAndQualifier[1]));
             IdxIndex idx = indexMap.get(fqPair);
             if (idx != null) {
                 return idx.heapSize();
