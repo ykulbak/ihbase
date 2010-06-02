@@ -19,15 +19,15 @@
  */
 package org.apache.hadoop.hbase.regionserver.idx.support.sets;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.hbase.util.ClassSize;
+import org.apache.log4j.Logger;
+
 
 /**
  * Tests the {@link SparseBitSet} implementation.
  */
 public class TestSparseBitSet extends IntSetBaseTestCase {
-    private static final Log LOG = LogFactory.getLog(TestSparseBitSet.class);
+    private static final Logger LOG = Logger.getLogger(TestSparseBitSet.class);
 
     @Override
     protected IntSetBase newSet(int max, int... sortedElements) {
@@ -53,7 +53,7 @@ public class TestSparseBitSet extends IntSetBaseTestCase {
         assertEquals(oneBitHeapSize, bitSet.heapSize());
 
         bitSet.addNext(1000);
-        assertEquals(SparseBitSet.FIXED_SIZE+ 2*(oneBitHeapSize - SparseBitSet.FIXED_SIZE), bitSet.heapSize());
+        assertEquals(SparseBitSet.FIXED_SIZE + 2 * (oneBitHeapSize - SparseBitSet.FIXED_SIZE), bitSet.heapSize());
         LOG.info("Sparse BitSet with two entries heap size: " + bitSet.heapSize());
     }
 

@@ -19,8 +19,6 @@
  */
 package org.apache.hadoop.hbase.regionserver;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.hbase.client.idx.exp.And;
 import org.apache.hadoop.hbase.client.idx.exp.Comparison;
 import org.apache.hadoop.hbase.client.idx.exp.Expression;
@@ -29,12 +27,14 @@ import org.apache.hadoop.hbase.io.HeapSize;
 import org.apache.hadoop.hbase.regionserver.idx.support.sets.IntSet;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.ClassSize;
+import org.apache.log4j.Logger;
+
 
 /**
  * Evaluates an {@link Expression}.
  */
 public class IdxExpressionEvaluator implements HeapSize {
-    private static final Log LOG = LogFactory.getLog(IdxExpressionEvaluator.class);
+    private static final Logger LOG = Logger.getLogger(IdxExpressionEvaluator.class);
 
     /**
      * Evaluates the expression using the provided search context.

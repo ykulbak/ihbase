@@ -20,8 +20,6 @@
 package org.apache.hadoop.hbase.regionserver;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.NotServingRegionException;
@@ -34,6 +32,7 @@ import org.apache.hadoop.hbase.regionserver.idx.support.arrays.ObjectArrayList;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.ClassSize;
 import org.apache.hadoop.hbase.util.Pair;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ import java.util.concurrent.Callable;
  * Manages the indexes for a single region.
  */
 public class IdxRegionIndexManager implements HeapSize {
-    private static final Log LOG = LogFactory.getLog(IdxRegionIndexManager.class);
+    private static final Logger LOG = Logger.getLogger(IdxRegionIndexManager.class);
 
     static final long FIXED_SIZE =
             ClassSize.align(ClassSize.OBJECT + 3 * ClassSize.REFERENCE +

@@ -19,8 +19,7 @@
  */
 package org.apache.hadoop.hbase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
@@ -34,7 +33,7 @@ import java.lang.management.ManagementFactory;
  * Utilities for JMX.
  */
 public final class JmxHelper {
-    static final Log LOG = LogFactory.getLog(JmxHelper.class);
+    static final Logger LOG = Logger.getLogger(JmxHelper.class);
 
 
     private JmxHelper() {

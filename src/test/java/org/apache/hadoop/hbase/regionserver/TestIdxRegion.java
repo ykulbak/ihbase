@@ -20,8 +20,6 @@
 package org.apache.hadoop.hbase.regionserver;
 
 import junit.framework.Assert;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.DoNotRetryIOException;
@@ -50,6 +48,7 @@ import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.filter.ValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.Pair;
+import org.apache.log4j.Logger;
 
 import javax.management.Attribute;
 import javax.management.MBeanAttributeInfo;
@@ -69,7 +68,7 @@ import java.util.Random;
  * Tests the indexed region implemention.
  */
 public class TestIdxRegion extends HBaseTestCase {
-    static final Log LOG = LogFactory.getLog(TestIdxRegion.class);
+    static final Logger LOG = Logger.getLogger(TestIdxRegion.class);
 
 
     IdxRegion region = null;

@@ -19,8 +19,6 @@
  */
 package org.apache.hadoop.hbase.regionserver;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.DoNotRetryIOException;
@@ -37,6 +35,7 @@ import org.apache.hadoop.hbase.util.ClassSize;
 import org.apache.hadoop.hbase.util.Pair;
 import org.apache.hadoop.metrics.util.MBeanUtil;
 import org.apache.hadoop.util.Progressable;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * filter expression.
  */
 public class IdxRegion extends HRegion {
-    static final Log LOG = LogFactory.getLog(IdxRegion.class);
+    static final Logger LOG = Logger.getLogger(IdxRegion.class);
 
     private static final int INDEX_BUILD_TIME_HISTORY_SIZE = 10;
 

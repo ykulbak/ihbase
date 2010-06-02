@@ -19,8 +19,6 @@
  */
 package org.apache.hadoop.hbase.regionserver;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HRegionInfo;
 import org.apache.hadoop.hbase.client.idx.IdxColumnDescriptor;
@@ -49,7 +47,6 @@ import java.util.Set;
  */
 public class IdxRegionMBeanImpl extends StandardMBean
         implements IdxRegionMBean {
-    static final Log LOG = LogFactory.getLog(IdxRegionMBeanImpl.class);
 
     private static final HashMap<String, String> ATTRIBUTE_DESCRIPTIONS =
             new HashMap<String, String>() {{
