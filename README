@@ -10,9 +10,9 @@ Previously release under HBase as a contrib. For usage information please refer 
 
 To build:
 ---------
-- Download or checkout hbase 0.20.4 and  build it in case it's not already built)
+- Download or checkout hbase 0.20.5 and build it (in case it's not already built)
 - Use maven to build, make sure you append -Dhbase.basedir=<your hbase directory>  to any maven command you issue
-- In case of problems email yoram.kulbak@gmail.com 
+- In case of any issue please email yoram.kulbak@gmail.com
 
 Owners:
 ------------

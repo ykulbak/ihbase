@@ -46,8 +46,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * An indexed region - has the capability to index a subset of the columns and speedup scans which specify a
- * filter expression.
+ * An indexed region - has the capability to index a subset of the columns and speedup scans which specify a filter
+ * expression.
  */
 public class IdxRegion extends HRegion {
     static final Logger LOG = Logger.getLogger(IdxRegion.class);
@@ -81,7 +81,8 @@ public class IdxRegion extends HRegion {
     }
 
     /**
-     * See {@link HRegion#HRegion(org.apache.hadoop.fs.Path, HLog, org.apache.hadoop.fs.FileSystem, org.apache.hadoop.hbase.HBaseConfiguration, org.apache.hadoop.hbase.HRegionInfo, FlushRequester)}.
+     * See {@link HRegion#HRegion(org.apache.hadoop.fs.Path, HLog, org.apache.hadoop.fs.FileSystem,
+     * org.apache.hadoop.hbase.HBaseConfiguration, org.apache.hadoop.hbase.HRegionInfo, FlushRequester)}.
      * <p/>
      * Initializes the index manager and the expression evaluator.
      */
@@ -120,9 +121,7 @@ public class IdxRegion extends HRegion {
     }
 
     /**
-     * {@inheritDoc}
-     * </p>
-     * Rebuilds the index.
+     * {@inheritDoc} </p> Rebuilds the index.
      */
     @Override
     protected Callable<Void> internalPreFlushcacheCommit() throws IOException {
@@ -153,8 +152,8 @@ public class IdxRegion extends HRegion {
     /**
      * {@inheritDoc}
      * <p/>
-     * Constructs an internal scanner based on the scan expression. Reverts
-     * to default region scan in case an expression was not provided.
+     * Constructs an internal scanner based on the scan expression. Reverts to default region scan in case an expression
+     * was not provided.
      */
     @Override
     protected InternalScanner instantiateInternalScanner(Scan scan,
@@ -315,11 +314,7 @@ public class IdxRegion extends HRegion {
         @Override
         public boolean next(List<KeyValue> outResults) throws IOException {
             ReadWriteConsistencyControl.resetThreadReadPoint(rwcc);
-            if (storeHeap == null) {
-                keyProvider.init();
-                initHeap();
-            }
-            //DebugPrint.println("IdxScanner.next");
+
             // Seek to the next key value
             seekNext();
             boolean result = super.next(outResults);
@@ -410,12 +405,6 @@ public class IdxRegion extends HRegion {
 
             startRow = scan.getStartRow();
             isStartRowSatisfied = startRow == null;
-        }
-
-        /**
-         * Must be called before the any method is accessed.
-         */
-        public void init() {
             memstoreHeap = initMemstoreHeap(scan);
         }
 
